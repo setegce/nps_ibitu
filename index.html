@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pesquisa de Satisfação Seteg</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Logo da Seteg -->
+  <img src="imagens/logo.png" alt="Logo Seteg" class="logo" />
+
+  <h1>Pesquisa de Satisfação </h1>
+  
+  <p>
+    Olá, Jessica Girão <br>
+    Sua opinião é essencial para aprimorarmos continuamente nosso atendimento e serviços. Por isso, preparamos a pesquisa abaixo para ouvir sua experiência.
+ 
+  </p>
+
+  <!-- Pergunta 1 -->
+  <div class="question">
+    <label for="rating-q1">1. De 0 a 10 qual nota você atribui ao trabalho da Seteg?</label>
+    <div class="rating" id="rating-q1" role="radiogroup" aria-labelledby="rating-q1">
+      <button type="button" aria-label="Nota 0">0</button>
+      <button type="button" aria-label="Nota 1">1</button>
+      <button type="button" aria-label="Nota 2">2</button>
+      <button type="button" aria-label="Nota 3">3</button>
+      <button type="button" aria-label="Nota 4">4</button>
+      <button type="button" aria-label="Nota 5">5</button>
+      <button type="button" aria-label="Nota 6">6</button>
+      <button type="button" aria-label="Nota 7">7</button>
+      <button type="button" aria-label="Nota 8">8</button>
+      <button type="button" aria-label="Nota 9">9</button>
+      <button type="button" aria-label="Nota 10">10</button>
+    </div>
+  </div>
+
+  <!-- Pergunta 2 -->
+  <div class="question">
+    <label for="rating-q2">2. De 0 a 10 o quanto você está satisfeito com o seu relacionamento com nossa equipe?</label>
+    <div class="rating" id="rating-q2" role="radiogroup" aria-labelledby="rating-q2">
+      <button type="button" aria-label="Nota 0">0</button>
+      <button type="button" aria-label="Nota 1">1</button>
+      <button type="button" aria-label="Nota 2">2</button>
+      <button type="button" aria-label="Nota 3">3</button>
+      <button type="button" aria-label="Nota 4">4</button>
+      <button type="button" aria-label="Nota 5">5</button>
+      <button type="button" aria-label="Nota 6">6</button>
+      <button type="button" aria-label="Nota 7">7</button>
+      <button type="button" aria-label="Nota 8">8</button>
+      <button type="button" aria-label="Nota 9">9</button>
+      <button type="button" aria-label="Nota 10">10</button>
+    </div>
+  </div>
+
+  <!-- Pergunta 3 -->
+  <div class="question">
+    <label for="rating-q3">3. De 0 a 10 o quão efetiva é a comunicação com os canais de acesso a Seteg?</label>
+    <div class="rating" id="rating-q3" role="radiogroup" aria-labelledby="rating-q3">
+      <button type="button" aria-label="Nota 0">0</button>
+      <button type="button" aria-label="Nota 1">1</button>
+      <button type="button" aria-label="Nota 2">2</button>
+      <button type="button" aria-label="Nota 3">3</button>
+      <button type="button" aria-label="Nota 4">4</button>
+      <button type="button" aria-label="Nota 5">5</button>
+      <button type="button" aria-label="Nota 6">6</button>
+      <button type="button" aria-label="Nota 7">7</button>
+      <button type="button" aria-label="Nota 8">8</button>
+      <button type="button" aria-label="Nota 9">9</button>
+      <button type="button" aria-label="Nota 10">10</button>
+    </div>
+  </div>
+
+  <!-- Pergunta 4 -->
+  <div class="question">
+    <label for="rating-q4">4. De 0 a 10 o quanto você nos indicaria a um amigo, familiar ou parceiro de negócios?</label>
+    <div class="rating" id="rating-q4" role="radiogroup" aria-labelledby="rating-q4">
+      <button type="button" aria-label="Nota 0">0</button>
+      <button type="button" aria-label="Nota 1">1</button>
+      <button type="button" aria-label="Nota 2">2</button>
+      <button type="button" aria-label="Nota 3">3</button>
+      <button type="button" aria-label="Nota 4">4</button>
+      <button type="button" aria-label="Nota 5">5</button>
+      <button type="button" aria-label="Nota 6">6</button>
+      <button type="button" aria-label="Nota 7">7</button>
+      <button type="button" aria-label="Nota 8">8</button>
+      <button type="button" aria-label="Nota 9">9</button>
+      <button type="button" aria-label="Nota 10">10</button>
+    </div>
+  </div>
+
+  <!-- Feedback -->
+  <div class="question">
+    <label for="feedback">5. Quais suas sugestões de melhorias, elogios e feedbacks gerais?</label>
+    <textarea id="feedback" placeholder="Digite sua resposta aqui..."></textarea>
+  </div>
+
+  <!-- Botão Enviar -->
+  <button type="button" id="submit-btn">Enviar Respostas</button>
+
+  <script>
+    // Marcar botão selecionado
+    document.querySelectorAll('.rating').forEach(ratingGroup => {
+      ratingGroup.addEventListener('click', function(e) {
+        if (e.target.tagName === 'BUTTON') {
+          this.querySelectorAll('button').forEach(btn => btn.classList.remove('selected'));
+          e.target.classList.add('selected');
+        }
+      });
+    });
+
+    // Enviar para Google Sheets
+    document.getElementById('submit-btn').addEventListener('click', async function() {
+      const ratings = [];
+      const unanswered = [];
+
+      document.querySelectorAll('.rating').forEach((group, index) => {
+        const selected = group.querySelector('.selected');
+        if (selected) {
+          ratings.push(selected.textContent);
+        } else {
+          ratings.push(null);
+          unanswered.push(`Pergunta ${index + 1}`);
+        }
+      });
+
+      const feedback = document.getElementById('feedback').value.trim();
+      if (feedback === '') {
+        unanswered.push('Campo de feedback');
+      }
+
+      if (unanswered.length > 0) {
+        const message = `❌ Por favor, preencha os seguintes campos antes de enviar:\n\n• ` + unanswered.join('\n• ');
+        alert(message);
+        return;
+      }
+
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwAhs8-h6l0WgFMtjNcI70QumnF-E61H36jw33h85u1aIwxiQbJ0bDArUEAJVTGSE15/exec';
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ratings, feedback })
+        });
+
+        alert('✅ Obrigado! Sua resposta foi registrada com sucesso.');
+
+        // Limpar formulário
+        document.querySelectorAll('.rating button').forEach(btn => btn.classList.remove('selected'));
+        document.getElementById('feedback').value = '';
+
+      } catch (error) {
+        alert('❌ Ocorreu um erro ao enviar sua resposta. Tente novamente mais tarde.');
+        console.error('Erro:', error);
+      }
+    });
+  </script>
+</body>
+</html>
